@@ -1,0 +1,115 @@
+/* ========== PRODUCTOS ========== */
+.titulo-seccion {
+  text-align: center;
+  margin: 30px 0 20px;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.productos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 25px;
+  padding: 0 30px 50px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.tarjeta {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  overflow: hidden;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.tarjeta:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.tarjeta img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  background-color: #eee;
+}
+
+.tarjeta h3 {
+  margin: 15px 10px 6px;
+  font-size: 1.15rem;
+  color: #333;
+}
+
+.tarjeta .precio {
+  color: #c0392b;
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.tarjeta .stock {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 15px;
+}
+
+.btn-agregar {
+  margin-top: auto;
+  width: 100%;
+  padding: 13px;
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-agregar:hover {
+  background-color: #219a52;
+}
+
+/* ========== FILTROS ========== */
+.filtros {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 25px;
+  padding: 0 20px;
+}
+
+.filtro-btn {
+  padding: 8px 18px;
+  border: 2px solid #c0392b;
+  background: white;
+  color: #c0392b;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.filtro-btn:hover {
+  background: #fdecea;
+}
+
+.filtro-btn.activo {
+  background: #c0392b;
+  color: white;
+}
+
+/* Responsive de productos */
+@media (max-width: 600px) {
+  .productos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    padding: 0 15px 40px;
+    gap: 15px;
+  }
+}

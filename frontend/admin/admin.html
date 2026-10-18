@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario - J & B</title>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/modal.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-left">
+      <img src="../img/Logo.png" alt="Logo J & B" class="logo-header">
+      <h1>Inventario J & B</h1>
+    </div>
+    <div class="header-right">
+      <a href="tienda.html" style="color:white; text-decoration:none; margin-right:15px; font-weight:bold;">Probar Tienda</a>
+      <button id="btn-salir">Salir</button>
+    </div>
+  </header>
+
+  <div class="admin-container">
+    <div class="admin-header">
+      <h1>Productos del Mini Mercado</h1>
+      <button class="btn-nuevo" id="btn-nuevo">+ Nuevo Producto</button>
+    </div>
+
+    <table class="tabla-productos">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Precio</th>
+          <th>Stock</th>
+          <th>Categoría</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-body">
+        <!-- Aquí se cargan los productos -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal para Crear / Editar -->
+  <div id="modal-form" class="modal hidden">
+    <div class="modal-contenido" style="max-width: 450px;">
+      <div class="modal-header">
+        <h2 id="titulo-modal">Nuevo Producto</h2>
+        <button id="btn-cerrar-form">&times;</button>
+      </div>
+
+      <div style="padding: 20px;">
+        <form id="form-producto">
+          <input type="hidden" id="producto-id">
+
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" required>
+          </div>
+
+          <div class="form-group">
+            <label for="precio">Precio</label>
+            <input type="number" id="precio" required min="0">
+          </div>
+
+          <div class="form-group">
+            <label for="stock">Stock</label>
+            <input type="number" id="stock" required min="0">
+          </div>
+
+          <div class="form-group">
+            <label for="categoria">Categoría</label>
+            <select id="categoria" required>
+              <option value="Abarrotes">Abarrotes</option>
+              <option value="Lácteos">Lácteos</option>
+              <option value="Aseo">Aseo</option>
+              <option value="Bebidas">Bebidas</option>
+              <option value="Otros">Otros</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="foto">Nombre de la foto (ej: arroz.jpg)</label>
+            <input type="text" id="foto" placeholder="arroz.jpg">
+          </div>
+
+          <div class="form-acciones">
+            <button type="button" class="btn-cancelar" id="btn-cancelar">Cancelar</button>
+            <button type="submit" class="btn-guardar">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/sesion.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

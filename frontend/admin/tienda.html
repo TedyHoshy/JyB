@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tienda Admin - J & B</title>
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/header.css">
+  <link rel="stylesheet" href="../css/productos.css">
+  <link rel="stylesheet" href="../css/modal.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-left">
+      <img src="../img/logo.png" alt="Logo J & B" class="logo-header">
+      <h1>Tienda Admin - Mini Mercado</h1>
+    </div>
+    <div class="header-right">
+      <a href="admin.html" style="color:white; text-decoration:none; margin-right:15px; font-weight:bold;">← Inventario</a>
+      <button id="btn-carrito">Carrito (0)</button>
+      <button id="btn-salir">Salir</button>
+    </div>
+  </header>
+
+  <main>
+    <h2 class="titulo-seccion">Productos (Vista Admin)</h2>
+
+    <div class="filtros">
+      <button class="filtro-btn activo" data-categoria="todos">Todos</button>
+      <button class="filtro-btn" data-categoria="Abarrotes">Abarrotes</button>
+      <button class="filtro-btn" data-categoria="Lácteos">Lácteos</button>
+      <button class="filtro-btn" data-categoria="Aseo">Aseo</button>
+      <button class="filtro-btn" data-categoria="Bebidas">Bebidas</button>
+    </div>
+
+    <div class="productos-grid" id="productos-grid">
+      <!-- Se cargan con JavaScript -->
+    </div>
+  </main>
+
+  <!-- Modal Carrito -->
+  <div id="modal-carrito" class="modal hidden">
+    <div class="modal-contenido">
+      <div class="modal-header">
+        <h2>Tu Carrito</h2>
+        <button id="btn-cerrar-carrito">&times;</button>
+      </div>
+
+      <div id="lista-carrito"></div>
+
+      <div class="modal-footer">
+        <p class="total">Total: $<span id="total-carrito">0</span></p>
+        <button id="btn-vaciar">Vaciar carrito</button>
+        <button id="btn-pagar">Pagar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/sesion.js"></script>
+  <script src="./js/tienda.js"></script>
+</body>
+</html>
