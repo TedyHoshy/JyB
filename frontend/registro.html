@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro - J & B</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/login.css">
+</head>
+<body class="login-page">
+
+  <div class="login-container">
+    <img src="img/logo.png" alt="Logo J & B" class="logo">
+    <h2>Crear cuenta</h2>
+    <p style="margin-bottom: 20px; color:#666; font-size:14px;">Solo para clientes</p>
+
+    <form id="form-registro">
+      <label for="nombre">Nombre completo</label>
+      <input type="text" id="nombre" placeholder="Tu nombre" required>
+
+      <label for="correo">Correo</label>
+      <input type="email" id="correo" placeholder="ejemplo@correo.com" required>
+
+      <label for="clave">Contraseña</label>
+      <input type="password" id="clave" placeholder="Mínimo 6 caracteres" required minlength="6">
+
+      <label for="clave2">Repetir contraseña</label>
+      <input type="password" id="clave2" placeholder="Repite la contraseña" required>
+
+      <button type="submit">Registrarse</button>
+    </form>
+
+    <p class="mensaje" id="mensaje"></p>
+
+    <p style="margin-top: 20px; font-size: 14px;">
+      ¿Ya tienes cuenta? 
+      <a href="index.html" style="color:#c0392b; font-weight:bold;">Iniciar sesión</a>
+    </p>
+  </div>
+
+  <script src="js/registro.js"></script>
+</body>
+</html>

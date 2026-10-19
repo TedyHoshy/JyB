@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caja - Mini Mercado J & B</title>
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/header.css">
+  <link rel="stylesheet" href="../css/modal.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-left">
+      <img src="../img/logo.png" alt="Logo J & B" class="logo-header">
+      <h1>Caja - Mini Mercado</h1>
+    </div>
+    <div class="header-right">
+      <a href="tienda.html" style="color:white; text-decoration:none; margin-right:12px; font-weight:bold;">← Tienda</a>
+      <span id="nombre-usuario" style="margin-right:12px;"></span>
+      <button id="btn-salir">Salir</button>
+    </div>
+  </header>
+
+  <div class="admin-container">
+    <div class="admin-header">
+      <h1>Ventas del día</h1>
+      <div style="text-align:right;">
+        <p style="margin:0; color:#666; font-size:14px;">Total del día</p>
+        <p id="total-dia" style="margin:0; font-size:1.8rem; font-weight:bold; color:#27ae60;">$0</p>
+      </div>
+    </div>
+
+    <table class="tabla-productos">
+      <thead>
+        <tr>
+          <th>Ticket</th>
+          <th>Fecha / Hora</th>
+          <th>Items</th>
+          <th>Total</th>
+          <th>Detalle</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-ventas">
+        <!-- Se cargan con JS -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal detalle ticket -->
+  <div id="modal-detalle" class="modal hidden">
+    <div class="modal-contenido" style="max-width: 420px;">
+      <div class="modal-header">
+        <h2>Detalle de venta</h2>
+        <button id="btn-cerrar-detalle">&times;</button>
+      </div>
+      <div id="contenido-detalle" style="padding: 20px; font-family: monospace;"></div>
+      <div class="modal-footer">
+        <button id="btn-cerrar-detalle-2" style="background:#c0392b; color:white; border:none; padding:12px; border-radius:6px; cursor:pointer; font-weight:bold; width:100%;">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/sesion.js"></script>
+  <script src="./js/caja.js"></script>
+</body>
+</html>

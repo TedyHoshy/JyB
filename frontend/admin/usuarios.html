@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usuarios - J & B</title>
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/header.css">
+  <link rel="stylesheet" href="../css/modal.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-left">
+      <img src="../img/logo.png" alt="Logo J & B" class="logo-header">
+      <h1>Gestión de Usuarios</h1>
+    </div>
+    <div class="header-right">
+      <a href="admin.html" style="color:white; text-decoration:none; margin-right:12px;">Inventario</a>
+      <a href="tienda.html" style="color:white; text-decoration:none; margin-right:12px;">Probar Tienda</a>
+      <button id="btn-salir">Salir</button>
+    </div>
+  </header>
+
+  <div class="admin-container">
+    <div class="admin-header">
+      <h1>Trabajadores y Usuarios</h1>
+      <button class="btn-nuevo" id="btn-nuevo-usuario">+ Nuevo Usuario</button>
+    </div>
+
+    <table class="tabla-productos">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Rol</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-usuarios">
+        <!-- Se cargan con JavaScript -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal Crear / Editar Usuario -->
+  <div id="modal-usuario" class="modal hidden">
+    <div class="modal-contenido" style="max-width: 450px;">
+      <div class="modal-header">
+        <h2 id="titulo-modal-usuario">Nuevo Usuario</h2>
+        <button id="btn-cerrar-usuario">&times;</button>
+      </div>
+
+      <div style="padding: 20px;">
+        <form id="form-usuario">
+          <input type="hidden" id="usuario-id">
+
+          <div class="form-group">
+            <label for="nombre-usuario">Nombre</label>
+            <input type="text" id="nombre-usuario" required>
+          </div>
+
+          <div class="form-group">
+            <label for="correo-usuario">Correo</label>
+            <input type="email" id="correo-usuario" required>
+          </div>
+
+          <div class="form-group">
+            <label for="clave-usuario">Contraseña</label>
+            <input type="text" id="clave-usuario" required placeholder="Mínimo 6 caracteres">
+          </div>
+
+          <div class="form-group">
+            <label for="rol-usuario">Rol</label>
+            <select id="rol-usuario" required>
+              <option value="trabajador">Trabajador</option>
+              <option value="admin">Administrador</option>
+            </select>
+          </div>
+
+          <div class="form-acciones">
+            <button type="button" class="btn-cancelar" id="btn-cancelar-usuario">Cancelar</button>
+            <button type="submit" class="btn-guardar">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/sesion.js"></script>
+  <script src="./js/usuarios.js"></script>
+</body>
+</html>

@@ -1,12 +1,13 @@
 // ============================================
-// CARRITO
+// PROTECCIÓN DE SESIÓN
 // ============================================
-let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-let todosLosProductos = []; // guardamos todos para filtrar
+const sesion = exigirLogin(["admin", "trabajador", "usuario"]);
 
 // ============================================
-// PINTAR PRODUCTOS DESDE PRISMA (con filtro)
+// PRODUCTOS
 // ============================================
+let todosLosProductos = [];
+
 async function pintarProductos(categoria = "todos") {
   const grid = document.getElementById("productos-grid");
   if (!grid) return;
@@ -18,7 +19,7 @@ async function pintarProductos(categoria = "todos") {
       todosLosProductos = await respuesta.json();
     }
 
-    // Filtrar
+    // Filtrar por categoría
     let productos = todosLosProductos;
     if (categoria !== "todos") {
       productos = todosLosProductos.filter(p => p.categoria === categoria);
@@ -46,11 +47,11 @@ async function pintarProductos(categoria = "todos") {
       grid.appendChild(tarjeta);
     });
 
-    // Activar botones Agregar
+    // Botones Agregar
     document.querySelectorAll(".btn-agregar").forEach(boton => {
       boton.addEventListener("click", () => {
         const id = parseInt(boton.dataset.id);
-        agregarAlCarrito(id, todosLosProductos);
+        agregarAlCarrito(id, todosLosProductos); // función de carrito.js
       });
     });
 
@@ -63,182 +64,33 @@ async function pintarProductos(categoria = "todos") {
 }
 
 // ============================================
-// AGREGAR AL CARRITO
-// ============================================
-function agregarAlCarrito(id, productos) {
-  const producto = productos.find(p => p.id === id);
-  if (!producto) return;
-
-  const item = carrito.find(p => p.id === id);
-
-  if (item) {
-    item.cantidad += 1;
-  } else {
-    carrito.push({
-      id: producto.id,
-      nombre: producto.nombre,
-      precio: producto.precio,
-      foto: producto.foto,
-      cantidad: 1
-    });
-  }
-
-  guardarCarrito();
-  actualizarContadorCarrito();
-  alert(`${producto.nombre} agregado al carrito`);
-}
-
-// ============================================
-// GUARDAR Y ACTUALIZAR CONTADOR
-// ============================================
-function guardarCarrito() {
-  localStorage.setItem("carrito", JSON.stringify(carrito));
-}
-
-function actualizarContadorCarrito() {
-  const btn = document.getElementById("btn-carrito");
-  if (!btn) return;
-  const total = carrito.reduce((suma, item) => suma + item.cantidad, 0);
-  btn.textContent = `Carrito (${total})`;
-}
-
-// ============================================
-// MOSTRAR / OCULTAR MODAL
-// ============================================
-function abrirCarrito() {
-  document.getElementById("modal-carrito").classList.remove("hidden");
-  pintarCarrito();
-}
-
-function cerrarCarrito() {
-  document.getElementById("modal-carrito").classList.add("hidden");
-}
-
-// ============================================
-// PINTAR EL CONTENIDO DEL CARRITO
-// ============================================
-function pintarCarrito() {
-  const lista = document.getElementById("lista-carrito");
-  const totalSpan = document.getElementById("total-carrito");
-
-  if (carrito.length === 0) {
-    lista.innerHTML = `<p style="text-align:center; color:#666; padding:30px 0;">Tu carrito está vacío</p>`;
-    totalSpan.textContent = "0";
-    return;
-  }
-
-  lista.innerHTML = "";
-  let total = 0;
-
-  carrito.forEach(item => {
-    const subtotal = item.precio * item.cantidad;
-    total += subtotal;
-
-    const div = document.createElement("div");
-    div.className = "item-carrito";
-
-    div.innerHTML = `
-      <div class="info">
-        <div class="nombre">${item.nombre}</div>
-        <div class="precio-unitario">$${item.precio.toLocaleString("es-CO")} c/u</div>
-      </div>
-      <div class="controles">
-        <button class="btn-menos" data-id="${item.id}">−</button>
-        <span class="cantidad">${item.cantidad}</span>
-        <button class="btn-mas" data-id="${item.id}">+</button>
-      </div>
-      <div class="subtotal">$${subtotal.toLocaleString("es-CO")}</div>
-    `;
-
-    lista.appendChild(div);
-  });
-
-  totalSpan.textContent = total.toLocaleString("es-CO");
-
-  // Botones + y −
-  document.querySelectorAll(".btn-mas").forEach(btn => {
-    btn.addEventListener("click", () => cambiarCantidad(parseInt(btn.dataset.id), 1));
-  });
-
-  document.querySelectorAll(".btn-menos").forEach(btn => {
-    btn.addEventListener("click", () => cambiarCantidad(parseInt(btn.dataset.id), -1));
-  });
-}
-
-// ============================================
-// CAMBIAR CANTIDAD
-// ============================================
-function cambiarCantidad(id, cambio) {
-  const item = carrito.find(p => p.id === id);
-  if (!item) return;
-
-  item.cantidad += cambio;
-
-  if (item.cantidad <= 0) {
-    carrito = carrito.filter(p => p.id !== id);
-  }
-
-  guardarCarrito();
-  actualizarContadorCarrito();
-  pintarCarrito();
-}
-
-// ============================================
-// VACIAR CARRITO
-// ============================================
-function vaciarCarrito() {
-  if (carrito.length === 0) return;
-  if (confirm("¿Seguro que quieres vaciar el carrito?")) {
-    carrito = [];
-    guardarCarrito();
-    actualizarContadorCarrito();
-    pintarCarrito();
-  }
-}
-
-// ============================================
 // EVENTOS
 // ============================================
 document.addEventListener("DOMContentLoaded", () => {
+  // Iniciar carrito (viene de carrito.js)
+  iniciarCarrito();
+
+  // Cargar productos
   pintarProductos();
-  actualizarContadorCarrito();
 
-  // Abrir carrito
-  const btnCarrito = document.getElementById("btn-carrito");
-  if (btnCarrito) {
-    btnCarrito.addEventListener("click", abrirCarrito);
+  // Botón Salir
+  document.getElementById("btn-salir")?.addEventListener("click", () => {
+    localStorage.removeItem("sesion");
+    window.location.href = "../index.html";
+  });
+
+  // Mostrar botón Caja solo a trabajador y admin
+  const btnCaja = document.getElementById("btn-caja");
+  if (btnCaja && sesion && (sesion.rol === "trabajador" || sesion.rol === "admin")) {
+    btnCaja.style.display = "inline";
   }
 
-  // Cerrar carrito
-  const btnCerrar = document.getElementById("btn-cerrar-carrito");
-  if (btnCerrar) {
-    btnCerrar.addEventListener("click", cerrarCarrito);
-  }
-
-  // Vaciar carrito
-  const btnVaciar = document.getElementById("btn-vaciar");
-  if (btnVaciar) {
-    btnVaciar.addEventListener("click", vaciarCarrito);
-  }
-
-  // Cerrar al hacer clic fuera del modal
-  const modal = document.getElementById("modal-carrito");
-  if (modal) {
-    modal.addEventListener("click", (e) => {
-      if (e.target === modal) cerrarCarrito();
-    });
-  }
-
-  // ========== FILTROS ==========
+  // Filtros
   document.querySelectorAll(".filtro-btn").forEach(btn => {
     btn.addEventListener("click", () => {
-      // Quitar clase activo de todos
       document.querySelectorAll(".filtro-btn").forEach(b => b.classList.remove("activo"));
-      // Poner activo al que se hizo clic
       btn.classList.add("activo");
-
-      const categoria = btn.dataset.categoria;
-      pintarProductos(categoria);
+      pintarProductos(btn.dataset.categoria);
     });
   });
 });

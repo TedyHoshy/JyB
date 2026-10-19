@@ -1,19 +1,3 @@
-// Usuarios de prueba (después se pueden pasar a Prisma)
-const usuarios = [
-  {
-    correo: "admin@jb.com",
-    clave: "admin123",
-    nombre: "Administrador",
-    rol: "admin"
-  },
-  {
-    correo: "cajero@jb.com",
-    clave: "cajero123",
-    nombre: "Cajero",
-    rol: "cajero"
-  }
-];
-
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("login-form");
   const mensaje = document.getElementById("mensaje");
@@ -25,25 +9,37 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const correo = document.getElementById("correo").value.trim().toLowerCase();
     const clave = document.getElementById("clave").value;
 
-    const usuario = usuarios.find(u => u.correo === correo && u.clave === clave);
+    try {
+      const res = await fetch("http://localhost:3000/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ correo, clave })
+      });
 
-    if (usuario) {
-      // Guardar sesión
-      localStorage.setItem("sesion", JSON.stringify({
-        nombre: usuario.nombre,
-        correo: usuario.correo,
-        rol: usuario.rol
-      }));
+      const data = await res.json();
 
-      redirigirSegunRol(usuario.rol);
-    } else {
-      mensaje.textContent = "Correo o contraseña incorrectos";
+      if (res.ok) {
+        // Guardar sesión
+        localStorage.setItem("sesion", JSON.stringify({
+          id: data.id,
+          nombre: data.nombre,
+          correo: data.correo,
+          rol: data.rol
+        }));
+
+        redirigirSegunRol(data.rol);
+      } else {
+        mensaje.textContent = data.error || "Correo o contraseña incorrectos";
+        mensaje.style.color = "#c0392b";
+      }
+    } catch (error) {
+      mensaje.textContent = "Error de conexión. ¿Está corriendo la API?";
       mensaje.style.color = "#c0392b";
     }
   });
@@ -52,7 +48,10 @@ document.addEventListener("DOMContentLoaded", () => {
 function redirigirSegunRol(rol) {
   if (rol === "admin") {
     window.location.href = "admin/admin.html";
+  } else if (rol === "trabajador") {
+    window.location.href = "minimercado/tienda.html";
   } else {
+    // usuario (cliente)
     window.location.href = "minimercado/tienda.html";
   }
 }

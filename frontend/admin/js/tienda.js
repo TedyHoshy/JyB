@@ -186,21 +186,12 @@ function vaciarCarrito() {
 // EVENTOS
 // ============================================
 document.addEventListener("DOMContentLoaded", () => {
+  iniciarCarrito();
   pintarProductos();
-  actualizarContadorCarrito();
-
-  document.getElementById("btn-carrito")?.addEventListener("click", abrirCarrito);
-  document.getElementById("btn-cerrar-carrito")?.addEventListener("click", cerrarCarrito);
-  document.getElementById("btn-vaciar")?.addEventListener("click", vaciarCarrito);
 
   document.getElementById("btn-salir")?.addEventListener("click", () => {
     localStorage.removeItem("sesion");
     window.location.href = "../index.html";
-  });
-
-  // Cerrar modal al hacer clic fuera
-  document.getElementById("modal-carrito")?.addEventListener("click", (e) => {
-    if (e.target.id === "modal-carrito") cerrarCarrito();
   });
 
   // Filtros

@@ -30,3 +30,22 @@ model Usuario {
   rol       String   // "admin", "trabajador", "usuario"
   createdAt DateTime @default(now())
 }
+
+model Venta {
+  id        Int         @id @default(autoincrement())
+  total     Int
+  usuarioId Int?
+  createdAt DateTime    @default(now())
+  items     VentaItem[]
+}
+
+model VentaItem {
+  id         Int    @id @default(autoincrement())
+  ventaId    Int
+  productoId Int
+  nombre     String
+  precio     Int
+  cantidad   Int
+  subtotal   Int
+  venta      Venta  @relation(fields: [ventaId], references: [id])
+}

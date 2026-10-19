@@ -17,6 +17,7 @@
       <h1>Mini Mercado J & B</h1>
     </div>
     <div class="header-right">
+      <a id="btn-caja" href="caja.html" style="color:white; text-decoration:none; margin-right:12px; font-weight:bold; display:none;">Caja</a>
       <button id="btn-carrito">Carrito (0)</button>
       <button id="btn-salir">Salir</button>
     </div>
@@ -34,14 +35,9 @@
 </div>
 
     <div class="productos-grid" id="productos-grid">
-
-      <div class="tarjeta">
-      </div>
-
+      <!-- Las tarjetas se generan con JavaScript -->
     </div>
   </main>
-
-  <script src="./js/minimercado.js"></script>
 
   <!-- ========== CARRITO (Modal) ========== -->
 <div id="modal-carrito" class="modal hidden">
@@ -63,5 +59,28 @@
   </div>
 </div>
 
+<!-- ========== TICKET DE VENTA ========== -->
+<div id="modal-ticket" class="modal hidden">
+  <div class="modal-contenido" style="max-width: 420px;">
+    <div class="modal-header">
+      <h2>Ticket de Venta</h2>
+      <button id="btn-cerrar-ticket">&times;</button>
+    </div>
+
+    <div id="contenido-ticket" style="padding: 20px; font-family: monospace;">
+      <!-- Se llena con JavaScript -->
+    </div>
+
+    <div class="modal-footer">
+      <button id="btn-cerrar-ticket-2" style="background:#c0392b; color:white; border:none; padding:12px; border-radius:6px; cursor:pointer; font-weight:bold; width:100%;">
+        Cerrar
+      </button>
+    </div>
+  </div>
+</div>
+
+  <script src="../js/sesion.js"></script>
+  <script src="../js/carrito.js"></script>
+  <script src="./js/minimercado.js"></script>
 </body>
 </html>
