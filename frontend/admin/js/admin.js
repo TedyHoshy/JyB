@@ -2,7 +2,7 @@
 const sesion = exigirLogin(["admin"]);
 
 // API viene de config.js — no volver a declarar const API
-const API_PRODUCTOS = `${API}/api/productos`;
+const API_PRODUCTOS = "https://jyb-production.up.railway.app/api/productos";
 
 // ============================================
 // CARGAR PRODUCTOS EN LA TABLA
