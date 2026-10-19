@@ -1,7 +1,7 @@
-// Proteger la página (solo admin)
+// Proteger la pagina (solo admin)
 const sesion = exigirLogin(["admin"]);
 
-// API viene de config.js — no volver a declarar const API
+// API viene de config.js
 const API_PRODUCTOS = "https://jyb-production.up.railway.app/api/productos";
 
 // ============================================
@@ -18,47 +18,41 @@ async function cargarProductos() {
     tbody.innerHTML = "";
 
     if (productos.length === 0) {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="6" style="text-align:center; padding:30px; color:#666;">
-            No hay productos. Agrega el primero.
-          </td>
-        </tr>`;
+      tbody.innerHTML =
+        '<tr><td colspan="6" style="text-align:center; padding:30px; color:#666;">No hay productos. Agrega el primero.</td></tr>';
       return;
     }
 
-    productos.forEach(p => {
+    productos.forEach(function (p) {
       const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${p.id}</td>
-        <td>${p.nombre}</td>
-        <td>$${Number(p.precio).toLocaleString("es-CO")}</td>
-        <td>${p.stock}</td>
-        <td>${p.categoria}</td>
-        <td class="acciones">
-          <button class="btn-editar" data-id="${p.id}">Editar</button>
-          <button class="btn-eliminar" data-id="${p.id}">Eliminar</button>
-        </td>
-      `;
+      tr.innerHTML =
+        "<td>" + p.id + "</td>" +
+        "<td>" + p.nombre + "</td>" +
+        "<td>$" + Number(p.precio).toLocaleString("es-CO") + "</td>" +
+        "<td>" + p.stock + "</td>" +
+        "<td>" + p.categoria + "</td>" +
+        '<td class="acciones">' +
+          '<button class="btn-editar" data-id="' + p.id + '">Editar</button> ' +
+          '<button class="btn-eliminar" data-id="' + p.id + '">Eliminar</button>' +
+        "</td>";
       tbody.appendChild(tr);
     });
 
-    document.querySelectorAll(".btn-editar").forEach(btn => {
-      btn.addEventListener("click", () => editarProducto(parseInt(btn.dataset.id)));
+    document.querySelectorAll(".btn-editar").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        editarProducto(parseInt(btn.dataset.id));
+      });
     });
 
-    document.querySelectorAll(".btn-eliminar").forEach(btn => {
-      btn.addEventListener("click", () => eliminarProducto(parseInt(btn.dataset.id)));
+    document.querySelectorAll(".btn-eliminar").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        eliminarProducto(parseInt(btn.dataset.id));
+      });
     });
-
   } catch (error) {
     console.error(error);
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="6" style="text-align:center; color:red; padding:30px;">
-          Error al cargar productos. ¿Está corriendo la API?
-        </td>
-      </tr>`;
+    tbody.innerHTML =
+      '<tr><td colspan="6" style="text-align:center; color:red; padding:30px;">Error al cargar productos. Esta corriendo la API?</td></tr>';
   }
 }
 
@@ -84,7 +78,7 @@ function cerrarModal() {
 // ============================================
 async function editarProducto(id) {
   try {
-    const res = await fetch(`${API_PRODUCTOS}/${id}`);
+    const res = await fetch(API_PRODUCTOS + "/" + id);
     const p = await res.json();
 
     document.getElementById("titulo-modal").textContent = "Editar Producto";
@@ -105,17 +99,17 @@ async function editarProducto(id) {
 // ELIMINAR PRODUCTO
 // ============================================
 async function eliminarProducto(id) {
-  if (!confirm("¿Seguro que quieres eliminar este producto?")) return;
+  if (!confirm("Seguro que quieres eliminar este producto?")) return;
 
   try {
-    const res = await fetch(`${API_PRODUCTOS}/${id}`, { method: "DELETE" });
+    const res = await fetch(API_PRODUCTOS + "/" + id, { method: "DELETE" });
     if (res.ok) {
       cargarProductos();
     } else {
       alert("Error al eliminar");
     }
   } catch (error) {
-    alert("Error de conexión");
+    alert("Error de conexion");
   }
 }
 
@@ -128,8 +122,8 @@ async function guardarProducto(e) {
   const id = document.getElementById("producto-id").value;
   const data = {
     nombre: document.getElementById("nombre").value,
-    precio: document.getElementById("precio").value,
-    stock: document.getElementById("stock").value,
+    precio: Number(document.getElementById("precio").value),
+    stock: Number(document.getElementById("stock").value),
     categoria: document.getElementById("categoria").value,
     foto: document.getElementById("foto").value || "sin-foto.jpg"
   };
@@ -137,7 +131,7 @@ async function guardarProducto(e) {
   try {
     let res;
     if (id) {
-      res = await fetch(`${API_PRODUCTOS}/${id}`, {
+      res = await fetch(API_PRODUCTOS + "/" + id, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
@@ -157,31 +151,44 @@ async function guardarProducto(e) {
       alert("Error al guardar");
     }
   } catch (error) {
-    alert("Error de conexión");
+    alert("Error de conexion");
   }
 }
 
 // ============================================
 // EVENTOS
 // ============================================
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
   cargarProductos();
 
-  document.getElementById("btn-nuevo")?.addEventListener("click", abrirModalNuevo);
-  document.getElementById("btn-cerrar-form")?.addEventListener("click", cerrarModal);
-  document.getElementById("btn-cancelar")?.addEventListener("click", cerrarModal);
-  document.getElementById("form-producto")?.addEventListener("submit", guardarProducto);
+  var btnNuevo = document.getElementById("btn-nuevo");
+  if (btnNuevo) btnNuevo.addEventListener("click", abrirModalNuevo);
 
-  document.getElementById("modal-form")?.addEventListener("click", (e) => {
-    if (e.target.id === "modal-form") cerrarModal();
-  });
+  var btnCerrar = document.getElementById("btn-cerrar-form");
+  if (btnCerrar) btnCerrar.addEventListener("click", cerrarModal);
 
-  document.getElementById("btn-salir")?.addEventListener("click", () => {
-    if (typeof cerrarSesion === "function") {
-      cerrarSesion();
-    } else {
-      localStorage.removeItem("sesion");
-      window.location.href = "../index.html";
-    }
-  });
+  var btnCancelar = document.getElementById("btn-cancelar");
+  if (btnCancelar) btnCancelar.addEventListener("click", cerrarModal);
+
+  var form = document.getElementById("form-producto");
+  if (form) form.addEventListener("submit", guardarProducto);
+
+  var modal = document.getElementById("modal-form");
+  if (modal) {
+    modal.addEventListener("click", function (e) {
+      if (e.target.id === "modal-form") cerrarModal();
+    });
+  }
+
+  var btnSalir = document.getElementById("btn-salir");
+  if (btnSalir) {
+    btnSalir.addEventListener("click", function () {
+      if (typeof cerrarSesion === "function") {
+        cerrarSesion();
+      } else {
+        localStorage.removeItem("sesion");
+        window.location.href = "../index.html";
+      }
+    });
+  }
 });

@@ -1,151 +1,116 @@
-// Solo Admin puede entrar
-const sesion = exigirLogin(["admin"]);
+// Caja - solo admin y trabajador
+const sesion = exigirLogin(["admin", "trabajador"]);
 
-const API_USUARIOS = `${API}api/usuarios`;
+const API_VENTAS = "https://jyb-production.up.railway.app/api/ventas";
 
 // ============================================
-// CARGAR USUARIOS
+// CARGAR VENTAS DEL DIA
 // ============================================
-async function cargarUsuarios() {
-  const tbody = document.getElementById("tabla-usuarios");
+async function cargarVentas() {
+  const tbody = document.getElementById("tabla-ventas");
+  const totalDia = document.getElementById("total-dia");
   if (!tbody) return;
 
   try {
-    const res = await fetch(API_USUARIOS);
-    const usuarios = await res.json();
+    const res = await fetch(API_VENTAS);
+    const ventas = await res.json();
+
+    // Fecha de hoy en hora local (Colombia)
+    const ahora = new Date();
+    const hoyStr = ahora.toLocaleDateString("en-CA"); // YYYY-MM-DD
+
+    // Filtrar ventas de hoy
+    const ventasHoy = ventas.filter(function (v) {
+      const fechaVenta = new Date(v.createdAt);
+      const fechaStr = fechaVenta.toLocaleDateString("en-CA");
+      return fechaStr === hoyStr;
+    });
 
     tbody.innerHTML = "";
+    var suma = 0;
 
-    if (usuarios.length === 0) {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="5" style="text-align:center; padding:30px; color:#666;">
-            No hay usuarios registrados.
-          </td>
-        </tr>`;
+    if (ventasHoy.length === 0) {
+      tbody.innerHTML =
+        '<tr><td colspan="5" style="text-align:center; padding:30px; color:#666;">No hay ventas hoy.</td></tr>';
+      if (totalDia) totalDia.textContent = "$0";
       return;
     }
 
-    usuarios.forEach(u => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${u.id}</td>
-        <td>${u.nombre}</td>
-        <td>${u.correo}</td>
-        <td><strong>${u.rol}</strong></td>
-        <td class="acciones">
-          <button class="btn-eliminar" data-id="${u.id}">Eliminar</button>
-        </td>
-      `;
+    ventasHoy.forEach(function (v) {
+      suma += Number(v.total);
+
+      var fecha = new Date(v.createdAt);
+      var hora = fecha.toLocaleString("es-CO", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+
+      var items = v.items ? v.items.length : 0;
+
+      var tr = document.createElement("tr");
+      tr.innerHTML =
+        "<td>#" + v.id + "</td>" +
+        "<td>" + hora + "</td>" +
+        "<td>" + items + "</td>" +
+        "<td>$" + Number(v.total).toLocaleString("es-CO") + "</td>" +
+        '<td><button class="btn-detalle" data-id="' + v.id + '">Ver</button></td>';
       tbody.appendChild(tr);
     });
 
-    // Eventos eliminar
-    document.querySelectorAll(".btn-eliminar").forEach(btn => {
-      btn.addEventListener("click", () => eliminarUsuario(parseInt(btn.dataset.id)));
+    if (totalDia) {
+      totalDia.textContent = "$" + suma.toLocaleString("es-CO");
+    }
+
+    // Botones Ver detalle
+    document.querySelectorAll(".btn-detalle").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var id = parseInt(btn.dataset.id);
+        var venta = ventasHoy.find(function (v) { return v.id === id; });
+        if (venta) mostrarDetalle(venta);
+      });
     });
 
   } catch (error) {
     console.error(error);
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="5" style="text-align:center; color:red; padding:30px;">
-          Error al cargar usuarios. ¿Está corriendo la API?
-        </td>
-      </tr>`;
+    tbody.innerHTML =
+      '<tr><td colspan="5" style="text-align:center; color:red; padding:30px;">Error al cargar ventas.</td></tr>';
   }
 }
 
 // ============================================
-// ABRIR MODAL NUEVO
+// MOSTRAR DETALLE
 // ============================================
-function abrirModalUsuario() {
-  document.getElementById("titulo-modal-usuario").textContent = "Nuevo Usuario";
-  document.getElementById("form-usuario").reset();
-  document.getElementById("usuario-id").value = "";
-  document.getElementById("modal-usuario").classList.remove("hidden");
-}
+function mostrarDetalle(venta) {
+  var texto = "Boleto #" + venta.id + "\n";
+  texto += "Total: $" + Number(venta.total).toLocaleString("es-CO") + "\n\n";
 
-// ============================================
-// CERRAR MODAL
-// ============================================
-function cerrarModalUsuario() {
-  document.getElementById("modal-usuario").classList.add("hidden");
-}
-
-// ============================================
-// ELIMINAR USUARIO
-// ============================================
-async function eliminarUsuario(id) {
-  if (!confirm("¿Seguro que quieres eliminar este usuario?")) return;
-
-  try {
-    const res = await fetch(`${API_USUARIOS}/${id}`, { method: "DELETE" });
-    if (res.ok) {
-      cargarUsuarios();
-    } else {
-      alert("Error al eliminar");
-    }
-  } catch (error) {
-    alert("Error de conexión");
-  }
-}
-
-// ============================================
-// GUARDAR USUARIO
-// ============================================
-async function guardarUsuario(e) {
-  e.preventDefault();
-
-  const data = {
-    nombre: document.getElementById("nombre-usuario").value.trim(),
-    correo: document.getElementById("correo-usuario").value.trim().toLowerCase(),
-    clave: document.getElementById("clave-usuario").value,
-    rol: document.getElementById("rol-usuario").value
-  };
-
-  if (data.clave.length < 6) {
-    alert("La contraseña debe tener al menos 6 caracteres");
-    return;
-  }
-
-  try {
-    const res = await fetch(API_USUARIOS, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
+  if (venta.items && venta.items.length) {
+    venta.items.forEach(function (item) {
+      texto +=
+        item.nombre +
+        " x" + item.cantidad +
+        " = $" + Number(item.subtotal).toLocaleString("es-CO") +
+        "\n";
     });
-
-    if (res.ok) {
-      cerrarModalUsuario();
-      cargarUsuarios();
-    } else {
-      const error = await res.json();
-      alert(error.error || "Error al guardar");
-    }
-  } catch (error) {
-    alert("Error de conexión");
   }
+
+  alert(texto);
 }
 
 // ============================================
 // EVENTOS
 // ============================================
-document.addEventListener("DOMContentLoaded", () => {
-  cargarUsuarios();
+document.addEventListener("DOMContentLoaded", function () {
+  cargarVentas();
 
-  document.getElementById("btn-nuevo-usuario").addEventListener("click", abrirModalUsuario);
-  document.getElementById("btn-cerrar-usuario").addEventListener("click", cerrarModalUsuario);
-  document.getElementById("btn-cancelar-usuario").addEventListener("click", cerrarModalUsuario);
-  document.getElementById("form-usuario").addEventListener("submit", guardarUsuario);
-
-  document.getElementById("btn-salir")?.addEventListener("click", () => {
-    localStorage.removeItem("sesion");
-    window.location.href = "../index.html";
-  });
-
-  // Cerrar modal al hacer clic fuera
-  document.getElementById("modal-usuario").addEventListener("click", (e) => {
-    if (e.target.id === "modal-usuario") cerrarModalUsuario();
-  });
+  var btnSalir = document.getElementById("btn-salir");
+  if (btnSalir) {
+    btnSalir.addEventListener("click", function () {
+      localStorage.removeItem("sesion");
+      window.location.href = "../index.html";
+    });
+  }
 });
