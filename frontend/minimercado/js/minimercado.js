@@ -36,22 +36,28 @@ async function pintarProductos(categoria = "todos") {
       const tarjeta = document.createElement("div");
       tarjeta.className = "tarjeta";
 
+      const sinStock = producto.stock <= 0;
+
       tarjeta.innerHTML = `
-        <img src="../img/minimercado/${producto.foto}" alt="${producto.nombre}">
+        <img src="../img/minimercado/${producto.foto}"
+             alt="${producto.nombre}"
+             onerror="this.style.display='none'">
         <h3>${producto.nombre}</h3>
         <p class="precio">$${producto.precio.toLocaleString("es-CO")}</p>
-        <p class="stock">Stock: ${producto.stock}</p>
-        <button class="btn-agregar" data-id="${producto.id}">Agregar</button>
+        <p class="stock">${sinStock ? "Agotado" : "Stock: " + producto.stock}</p>
+        <button class="btn-agregar" data-id="${producto.id}" ${sinStock ? "disabled" : ""}>
+          ${sinStock ? "Agotado" : "Agregar"}
+        </button>
       `;
 
       grid.appendChild(tarjeta);
     });
 
-    // Botones Agregar
-    document.querySelectorAll(".btn-agregar").forEach(boton => {
+    // Botones Agregar (solo los que no están disabled)
+    document.querySelectorAll(".btn-agregar:not([disabled])").forEach(boton => {
       boton.addEventListener("click", () => {
         const id = parseInt(boton.dataset.id);
-        agregarAlCarrito(id, todosLosProductos); // función de carrito.js
+        agregarAlCarrito(id, todosLosProductos);
       });
     });
 
