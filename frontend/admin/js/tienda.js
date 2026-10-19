@@ -62,6 +62,12 @@ document.addEventListener("DOMContentLoaded", () => {
   iniciarCarrito(); // viene de carrito.js
   pintarProductos();
 
+  // Mostrar botón Caja
+  const btnCaja = document.getElementById("btn-caja");
+  if (btnCaja && sesion && (sesion.rol === "admin" || sesion.rol === "trabajador")) {
+    btnCaja.style.display = "inline";
+  }
+
   document.getElementById("btn-salir")?.addEventListener("click", () => {
     localStorage.removeItem("sesion");
     window.location.href = "../index.html";
