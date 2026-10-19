@@ -1,7 +1,8 @@
 // Proteger la página (solo admin)
 const sesion = exigirLogin(["admin"]);
 
-const API = `${API}api/productos`;
+// API viene de config.js — no volver a declarar const API
+const API_PRODUCTOS = `${API}/api/productos`;
 
 // ============================================
 // CARGAR PRODUCTOS EN LA TABLA
@@ -11,7 +12,7 @@ async function cargarProductos() {
   if (!tbody) return;
 
   try {
-    const res = await fetch(API);
+    const res = await fetch(API_PRODUCTOS);
     const productos = await res.json();
 
     tbody.innerHTML = "";
@@ -31,7 +32,7 @@ async function cargarProductos() {
       tr.innerHTML = `
         <td>${p.id}</td>
         <td>${p.nombre}</td>
-        <td>$${p.precio.toLocaleString("es-CO")}</td>
+        <td>$${Number(p.precio).toLocaleString("es-CO")}</td>
         <td>${p.stock}</td>
         <td>${p.categoria}</td>
         <td class="acciones">
@@ -42,7 +43,6 @@ async function cargarProductos() {
       tbody.appendChild(tr);
     });
 
-    // Eventos de los botones
     document.querySelectorAll(".btn-editar").forEach(btn => {
       btn.addEventListener("click", () => editarProducto(parseInt(btn.dataset.id)));
     });
@@ -84,7 +84,7 @@ function cerrarModal() {
 // ============================================
 async function editarProducto(id) {
   try {
-    const res = await fetch(`${API}/${id}`);
+    const res = await fetch(`${API_PRODUCTOS}/${id}`);
     const p = await res.json();
 
     document.getElementById("titulo-modal").textContent = "Editar Producto";
@@ -108,7 +108,7 @@ async function eliminarProducto(id) {
   if (!confirm("¿Seguro que quieres eliminar este producto?")) return;
 
   try {
-    const res = await fetch(`${API}/${id}`, { method: "DELETE" });
+    const res = await fetch(`${API_PRODUCTOS}/${id}`, { method: "DELETE" });
     if (res.ok) {
       cargarProductos();
     } else {
@@ -137,15 +137,13 @@ async function guardarProducto(e) {
   try {
     let res;
     if (id) {
-      // Actualizar
-      res = await fetch(`${API}/${id}`, {
+      res = await fetch(`${API_PRODUCTOS}/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
       });
     } else {
-      // Crear
-      res = await fetch(API, {
+      res = await fetch(API_PRODUCTOS, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
@@ -169,18 +167,21 @@ async function guardarProducto(e) {
 document.addEventListener("DOMContentLoaded", () => {
   cargarProductos();
 
-  document.getElementById("btn-nuevo").addEventListener("click", abrirModalNuevo);
-  document.getElementById("btn-cerrar-form").addEventListener("click", cerrarModal);
-  document.getElementById("btn-cancelar").addEventListener("click", cerrarModal);
-  document.getElementById("form-producto").addEventListener("submit", guardarProducto);
+  document.getElementById("btn-nuevo")?.addEventListener("click", abrirModalNuevo);
+  document.getElementById("btn-cerrar-form")?.addEventListener("click", cerrarModal);
+  document.getElementById("btn-cancelar")?.addEventListener("click", cerrarModal);
+  document.getElementById("form-producto")?.addEventListener("submit", guardarProducto);
 
-  // Cerrar modal al hacer clic fuera
-  document.getElementById("modal-form").addEventListener("click", (e) => {
+  document.getElementById("modal-form")?.addEventListener("click", (e) => {
     if (e.target.id === "modal-form") cerrarModal();
   });
-});
 
-const btnSalir = document.getElementById("btn-salir");
-if (btnSalir) {
-  btnSalir.addEventListener("click", cerrarSesion);
-}
+  document.getElementById("btn-salir")?.addEventListener("click", () => {
+    if (typeof cerrarSesion === "function") {
+      cerrarSesion();
+    } else {
+      localStorage.removeItem("sesion");
+      window.location.href = "../index.html";
+    }
+  });
+});
