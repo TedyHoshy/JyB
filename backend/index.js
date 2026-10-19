@@ -6,7 +6,9 @@ const app = express();
 const prisma = new PrismaClient();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(cors({
+  origin: true  // temporal; luego puedes poner solo tu dominio
+}));
 app.use(express.json());
 
 // Ruta de prueba
