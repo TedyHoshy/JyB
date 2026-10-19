@@ -1,7 +1,7 @@
 // Solo Admin puede entrar
 const sesion = exigirLogin(["admin"]);
 
-const API_USUARIOS = "http://localhost:3000/api/usuarios";
+const API_USUARIOS = `${API}api/usuarios`;
 
 // ============================================
 // CARGAR USUARIOS

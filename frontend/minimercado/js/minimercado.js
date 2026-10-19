@@ -15,7 +15,7 @@ async function pintarProductos(categoria = "todos") {
   try {
     // Solo pedimos a la API la primera vez
     if (todosLosProductos.length === 0) {
-      const respuesta = await fetch("http://localhost:3000/api/productos");
+      const respuesta = await fetch(`${API}api/productos`);
       todosLosProductos = await respuesta.json();
     }
 

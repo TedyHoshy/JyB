@@ -28,7 +28,7 @@ async function cargarVentas() {
   if (!tbody) return;
 
   try {
-    const res = await fetch("http://localhost:3000/api/ventas");
+    const res = await fetch(`${API}api/ventas`);
     const ventas = await res.json();
 
     // Filtrar solo las de hoy

@@ -1,7 +1,7 @@
 // Proteger la página (solo admin)
 const sesion = exigirLogin(["admin"]);
 
-const API = "http://localhost:3000/api/productos";
+const API = `${API}api/productos`;
 
 // ============================================
 // CARGAR PRODUCTOS EN LA TABLA

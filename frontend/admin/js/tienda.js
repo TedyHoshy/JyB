@@ -9,7 +9,7 @@ async function pintarProductos(categoria = "todos") {
 
   try {
     if (todosLosProductos.length === 0) {
-      const respuesta = await fetch("http://localhost:3000/api/productos");
+      const respuesta = await fetch(`${API}api/productos`);
       todosLosProductos = await respuesta.json();
     }
 

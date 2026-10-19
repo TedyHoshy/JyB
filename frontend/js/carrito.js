@@ -168,7 +168,7 @@ async function pagar() {
     const usuarioId = sesion ? sesion.id : null;
 
     // Enviar venta a la API
-    const res = await fetch("http://localhost:3000/api/ventas", {
+    const res = await fetch(`${API}api/ventas`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
