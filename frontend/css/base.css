@@ -1,3 +1,29 @@
+/* ========== BASE J & B – Premium ========== */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Playfair+Display:wght@600;700&display=swap');
+
+:root {
+  --rojo: #b83227;
+  --rojo-vivo: #d6453a;
+  --rojo-oscuro: #8b221a;
+  --rojo-suave: #fff0ee;
+  --rojo-glow: rgba(184, 50, 39, 0.25);
+  --verde: #2ecc71;
+  --verde-oscuro: #27ae60;
+  --azul: #3498db;
+  --texto: #1a1a2e;
+  --texto-suave: #5c5c6f;
+  --muted: #8b8b9e;
+  --fondo: #f7f5f3;
+  --fondo-card: #ffffff;
+  --borde: rgba(26, 26, 46, 0.06);
+  --sombra-sm: 0 2px 8px rgba(26, 26, 46, 0.04);
+  --sombra: 0 10px 40px rgba(26, 26, 46, 0.08);
+  --sombra-lg: 0 20px 60px rgba(26, 26, 46, 0.12);
+  --radio: 16px;
+  --radio-sm: 10px;
+  --trans: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -5,7 +31,50 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
+  font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+  background: var(--fondo);
+  color: var(--texto);
   min-height: 100vh;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--rojo);
+  text-decoration: none;
+  transition: color var(--trans);
+}
+
+a:hover {
+  color: var(--rojo-vivo);
+}
+
+button {
+  font-family: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Scrollbar suave */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #d0d0d8;
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #b0b0bc;
 }

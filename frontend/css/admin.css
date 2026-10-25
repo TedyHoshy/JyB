@@ -1,95 +1,196 @@
-/* ========== ADMIN ========== */
+/* ========== ADMIN Premium ========== */
 .admin-container {
-  max-width: 1100px;
-  margin: 30px auto;
-  padding: 0 20px;
+  max-width: 1120px;
+  margin: 36px auto;
+  padding: 0 24px 56px;
 }
 
 .admin-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 4px 0;
 }
 
 .admin-header h1 {
-  color: #c0392b;
+  color: var(--rojo);
   margin: 0;
-  font-size: 1.6rem;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.65rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .btn-nuevo {
-  background: #27ae60;
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
   color: white;
   border: none;
-  padding: 12px 20px;
-  border-radius: 6px;
-  font-size: 15px;
+  padding: 13px 24px;
+  border-radius: 999px;
+  font-size: 0.9rem;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 600;
+  box-shadow:
+    0 3px 0 #1e8449,
+    0 6px 18px rgba(39, 174, 96, 0.3);
+  transition: transform var(--trans), box-shadow var(--trans);
 }
 
 .btn-nuevo:hover {
-  background: #219a52;
+  transform: translateY(-2px);
+  box-shadow:
+    0 5px 0 #1e8449,
+    0 10px 24px rgba(39, 174, 96, 0.35);
+}
+
+.btn-nuevo:active {
+  transform: translateY(1px);
+  box-shadow:
+    0 1px 0 #1e8449,
+    0 3px 10px rgba(39, 174, 96, 0.25);
 }
 
 /* Tabla */
 .tabla-productos {
   width: 100%;
-  border-collapse: collapse;
-  background: white;
-  border-radius: 10px;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--fondo-card);
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  box-shadow: var(--sombra);
+  border: 1px solid var(--borde);
 }
 
 .tabla-productos th {
-  background: #c0392b;
+  background: linear-gradient(135deg, #c0392b 0%, #9a2a20 100%);
   color: white;
-  padding: 14px 12px;
+  padding: 16px 16px;
   text-align: left;
-  font-size: 14px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
 .tabla-productos td {
-  padding: 12px;
-  border-bottom: 1px solid #eee;
-  font-size: 14px;
+  padding: 15px 16px;
+  border-bottom: 1px solid #f2f0ee;
+  font-size: 0.9rem;
+  color: var(--texto);
 }
 
-.tabla-productos tr:hover {
-  background: #f9f9f9;
+.tabla-productos tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.tabla-productos tbody tr {
+  transition: background var(--trans);
+}
+
+.tabla-productos tbody tr:hover {
+  background: linear-gradient(90deg, #fff8f7 0%, #ffffff 100%);
 }
 
 .acciones {
   display: flex;
   gap: 8px;
+  flex-wrap: wrap;
 }
 
 .btn-editar {
-  background: #3498db;
+  background: linear-gradient(135deg, #5dade2, #3498db);
   color: white;
   border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
+  padding: 8px 14px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: transform var(--trans), box-shadow var(--trans);
+  box-shadow: 0 2px 6px rgba(52, 152, 219, 0.25);
 }
 
 .btn-editar:hover {
-  background: #2980b9;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.35);
 }
 
 .btn-eliminar {
-  background: #e74c3c;
+  background: linear-gradient(135deg, #ec7063, #e74c3c);
   color: white;
   border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
+  padding: 8px 14px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: transform var(--trans), box-shadow var(--trans);
+  box-shadow: 0 2px 6px rgba(231, 76, 60, 0.25);
 }
 
 .btn-eliminar:hover {
-  background: #c0392b;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.35);
+}
+
+#total-dia {
+  font-variant-numeric: tabular-nums;
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+/* Inputs de filtro en caja */
+#filtro-fecha {
+  padding: 10px 14px !important;
+  border: 1.5px solid #e8e4e0 !important;
+  border-radius: 10px !important;
+  font-family: inherit !important;
+  background: white !important;
+  transition: border-color var(--trans), box-shadow var(--trans) !important;
+}
+
+#filtro-fecha:focus {
+  outline: none !important;
+  border-color: var(--rojo) !important;
+  box-shadow: 0 0 0 3px var(--rojo-glow) !important;
+}
+
+#btn-hoy,
+#btn-recargar {
+  border-radius: 999px !important;
+  font-weight: 600 !important;
+  transition: transform var(--trans), box-shadow var(--trans) !important;
+}
+
+#btn-hoy:hover,
+#btn-recargar:hover {
+  transform: translateY(-1px);
+}
+
+@media (max-width: 700px) {
+  .admin-container {
+    margin: 20px auto;
+    padding: 0 14px 48px;
+  }
+
+  .tabla-productos {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 14px;
+  }
+
+  .tabla-productos th,
+  .tabla-productos td {
+    padding: 12px 10px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+
+  .admin-header h1 {
+    font-size: 1.35rem;
+  }
 }

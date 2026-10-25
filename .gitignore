@@ -1,5 +1,9 @@
 node_modules/
 .env
+coverage/
 *.db
 dev.db
 .DS_Store
+*.log
+backend/node_modules/
+frontend/node_modules/

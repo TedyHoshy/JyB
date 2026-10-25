@@ -1,7 +1,7 @@
 // Solo trabajador y admin
 const sesion = exigirLogin(["admin", "trabajador"]);
 
-const API_VENTAS = "https://jyb-production.up.railway.app/api/ventas";
+// usa API de config.js
 
 document.addEventListener("DOMContentLoaded", function () {
   // Proteger DESPUES de cargar el DOM
@@ -41,7 +41,7 @@ async function cargarVentas() {
   if (!tbody) return;
 
   try {
-    var res = await fetch(API_VENTAS);
+    var res = await fetch(`${API}api/ventas`);
     var ventas = await res.json();
 
     var hoy = new Date().toDateString();

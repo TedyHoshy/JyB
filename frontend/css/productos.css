@@ -1,78 +1,126 @@
-/* ========== PRODUCTOS ========== */
+/* ========== PRODUCTOS / TIENDA Premium ========== */
 .titulo-seccion {
   text-align: center;
-  margin: 30px 0 20px;
-  color: #333;
-  font-size: 1.5rem;
+  margin: 36px 0 8px;
+  color: var(--texto);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+main {
+  padding-bottom: 48px;
 }
 
 .productos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 25px;
-  padding: 0 30px 50px;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 26px;
+  padding: 8px 28px 56px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .tarjeta {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  background: var(--fondo-card);
+  border-radius: 20px;
+  box-shadow: var(--sombra-sm);
   overflow: hidden;
   text-align: center;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform var(--trans), box-shadow var(--trans);
   display: flex;
   flex-direction: column;
+  border: 1px solid var(--borde);
+  position: relative;
+}
+
+.tarjeta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  padding: 1px;
+  background: linear-gradient(145deg, transparent 40%, rgba(184, 50, 39, 0.08));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--trans);
 }
 
 .tarjeta:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transform: translateY(-8px);
+  box-shadow: var(--sombra-lg);
+}
+
+.tarjeta:hover::before {
+  opacity: 1;
 }
 
 .tarjeta img {
   width: 100%;
-  height: 180px;
-  object-fit: contain;      /* muestra el producto completo, sin recortar */
-  background-color: #fff;
-  padding: 10px;
+  height: 190px;
+  object-fit: contain;
+  background: linear-gradient(180deg, #faf8f6 0%, #ffffff 100%);
+  padding: 16px;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tarjeta:hover img {
+  transform: scale(1.04);
 }
 
 .tarjeta h3 {
-  margin: 15px 10px 6px;
-  font-size: 1.15rem;
-  color: #333;
+  margin: 10px 14px 4px;
+  font-size: 1rem;
+  color: var(--texto);
+  font-weight: 600;
+  line-height: 1.35;
 }
 
 .tarjeta .precio {
-  color: #c0392b;
-  font-size: 1.25rem;
-  font-weight: bold;
-  margin-bottom: 4px;
+  color: var(--rojo);
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 6px 0 2px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
 }
 
 .tarjeta .stock {
-  color: #666;
-  font-size: 0.9rem;
-  margin-bottom: 15px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-bottom: 14px;
+  font-weight: 500;
 }
 
 .btn-agregar {
   margin-top: auto;
   width: 100%;
-  padding: 13px;
-  background-color: #27ae60;
+  padding: 14px;
+  background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
   color: white;
   border: none;
-  font-size: 15px;
-  font-weight: bold;
+  font-size: 0.9rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: filter var(--trans), letter-spacing var(--trans);
+  letter-spacing: 0.02em;
 }
 
-.btn-agregar:hover {
-  background-color: #219a52;
+.btn-agregar:hover:not(:disabled) {
+  filter: brightness(1.06);
+  letter-spacing: 0.04em;
+}
+
+.btn-agregar:disabled {
+  background: linear-gradient(135deg, #c5c5cd, #a8a8b0);
+  cursor: not-allowed;
+  filter: none;
+  letter-spacing: 0;
 }
 
 /* ========== FILTROS ========== */
@@ -81,45 +129,62 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 25px;
+  margin: 20px 0 28px;
   padding: 0 20px;
 }
 
 .filtro-btn {
-  padding: 8px 18px;
-  border: 2px solid #c0392b;
+  padding: 9px 20px;
+  border: 1.5px solid rgba(184, 50, 39, 0.35);
   background: white;
-  color: #c0392b;
-  border-radius: 20px;
+  color: var(--rojo);
+  border-radius: 999px;
   cursor: pointer;
-  font-size: 14px;
-  font-weight: bold;
-  transition: all 0.2s;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all var(--trans);
+  box-shadow: var(--sombra-sm);
 }
 
 .filtro-btn:hover {
-  background: #fdecea;
+  background: var(--rojo-suave);
+  border-color: var(--rojo);
+  transform: translateY(-1px);
 }
 
 .filtro-btn.activo {
-  background: #c0392b;
+  background: linear-gradient(135deg, #d6453a, #b83227);
   color: white;
+  border-color: transparent;
+  box-shadow: 0 4px 16px rgba(184, 50, 39, 0.35);
 }
 
-/* Responsive de productos */
 @media (max-width: 600px) {
-  .productos-grid {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    padding: 0 15px 40px;
-    gap: 15px;
+  .titulo-seccion {
+    font-size: 1.4rem;
+    margin-top: 24px;
   }
-}
 
-.btn-agregar:disabled {
-  background-color: #95a5a6;
-  cursor: not-allowed;
-}
+  .productos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+    padding: 0 14px 48px;
+    gap: 14px;
+  }
 
-.btn-agregar:disabled:hover {
-  background-color: #95a5a6;
+  .tarjeta {
+    border-radius: 14px;
+  }
+
+  .tarjeta img {
+    height: 140px;
+    padding: 10px;
+  }
+
+  .tarjeta h3 {
+    font-size: 0.88rem;
+  }
+
+  .tarjeta .precio {
+    font-size: 1.1rem;
+  }
 }
